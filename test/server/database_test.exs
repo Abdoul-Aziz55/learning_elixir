@@ -3,24 +3,23 @@ defmodule Server.DatabaseTest do
 
   setup context do
     _ = start_supervised!({Server.Database, name: context.test})
+    Server.Database.create(context.test, "AzSolo", 1)
     %{database: context.test}
   end
 
-  test "inserts a value in database", %{database: database} do
-    Server.Database.create(database, "AzSolo", 1)
-
+  # behind the scenes verifies that a value is correctly inserted
+  # in the database
+  test "reads a value in database", %{database: database} do
     assert Server.Database.read(database, "AzSolo") == {:ok, 1}
   end
 
   test "updates a value in database", %{database: database} do
-    Server.Database.create(database, "AzSolo", 1)
     Server.Database.update(database, "AzSolo", 3)
 
     assert Server.Database.read(database, "AzSolo") == {:ok, 3}
   end
 
   test "deletes a value in database", %{database: database} do
-    Server.Database.create(database, "AzSolo", 1)
     Server.Database.delete(database, "AzSolo")
 
     assert Server.Database.read(database, "AzSolo") == :error

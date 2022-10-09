@@ -6,8 +6,10 @@ defmodule Server.Supervisor do
   end
 
   def init(:ok) do
+
+
     children = [
-      {Server.Database, name: Server.Database}
+      {Server.Database, name: Server.Database},
     ]
 
     Supervisor.init(children, strategy: :one_for_one)

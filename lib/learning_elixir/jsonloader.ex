@@ -7,7 +7,7 @@ defmodule JsonLoader do
           |> Poison.Parser.parse!(%{})
           |> Enum.map(fn order_data ->
             %{"id" => order_id} = order_data
-            Server.Database.update(database, order_id, order_data)
+            Server.Database.create(database, order_id, order_data)
           end)
           :ok
 

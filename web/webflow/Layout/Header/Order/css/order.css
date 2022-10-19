@@ -285,18 +285,6 @@ html.w-mod-touch * {
   display:none
 }
 
-.w-button {
-  display: inline-block;
-  padding: 9px 15px;
-  background-color: #3898EC;
-  color: white;
-  border: 0;
-  line-height: inherit;
-  text-decoration: none;
-  cursor: pointer;
-  border-radius:0
-}
-
 input.w-button {
   -webkit-appearance:button
 }
@@ -2481,38 +2469,6 @@ textarea.w-input, textarea.w-select {
   grid-template-rows: auto auto;
 }
 
-.collection-list-wrapper {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-}
-
-.list {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  list-style-type: none;
-}
-
-.list-2 {
-  list-style-type: none;
-}
-
 .foot {
   display: -webkit-box;
   display: -webkit-flex;
@@ -2537,46 +2493,6 @@ textarea.w-input, textarea.w-select {
   justify-content: space-between;
 }
 
-.collection-item {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-family: 'Fa solid 900', sans-serif;
-}
-
-.list-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-box-pack: start;
-  -webkit-justify-content: flex-start;
-  -ms-flex-pack: start;
-  justify-content: flex-start;
-  list-style-type: none;
-}
-
-.list-4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  list-style-type: none;
-}
 
 .orders {
   display: -webkit-box;
@@ -2605,65 +2521,6 @@ textarea.w-input, textarea.w-select {
   background-color: transparent;
 }
 
-.header {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-}
-
-.headers {
-  display: block;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  -webkit-box-align: stretch;
-  -webkit-align-items: stretch;
-  -ms-flex-align: stretch;
-  align-items: stretch;
-  -webkit-box-flex: 0;
-  -webkit-flex: 0 auto;
-  -ms-flex: 0 auto;
-  flex: 0 auto;
-}
-
-.list-5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  width: auto;
-  margin-bottom: auto;
-  padding-left: 0px;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  -webkit-flex-wrap: nowrap;
-  -ms-flex-wrap: nowrap;
-  flex-wrap: nowrap;
-  -webkit-box-align: stretch;
-  -webkit-align-items: stretch;
-  -ms-flex-align: stretch;
-  align-items: stretch;
-  list-style-type: none;
-}
-
-.text-block {
-  width: auto;
-  font-family: 'Fa solid 900', sans-serif;
-}
-
 .list-items {
   display: -webkit-box;
   display: -webkit-flex;
@@ -2682,9 +2539,6 @@ textarea.w-input, textarea.w-select {
   list-style-type: none;
 }
 
-.list-items.header {
-  font-family: 'Fa solid 900', sans-serif;
-}
 
 .order-but {
   width: 70px;
@@ -2706,23 +2560,6 @@ textarea.w-input, textarea.w-select {
   justify-content: space-between;
 }
 
-.pagination {
-  font-family: 'Fa 400', sans-serif;
-  text-align: center;
-}
-
-.pagination-footer {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  width: 150px;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  list-style-type: none;
-}
 
 .login {
   width: 100px;
@@ -2756,6 +2593,7 @@ textarea.w-input, textarea.w-select {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
+  padding: 25px;
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
@@ -2801,7 +2639,7 @@ textarea.w-input, textarea.w-select {
   justify-content: space-between;
 }
 
-.text-block-2 {
+.return-butt {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2820,19 +2658,9 @@ textarea.w-input, textarea.w-select {
   font-family: 'Fa solid 900', sans-serif;
   font-size: 40px;
   line-height: 20px;
+  cursor: pointer;
 }
 
-.list-6 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  list-style-type: none;
-}
 
 .list-item {
   display: -webkit-box;
@@ -2861,29 +2689,6 @@ textarea.w-input, textarea.w-select {
   list-style-type: none;
 }
 
-.list-8 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  list-style-type: none;
-}
-
-.text-block-3 {
-  font-family: 'Fa solid 900', sans-serif;
-}
-
-.text-block-4 {
-  font-family: 'Fa solid 900', sans-serif;
-}
-
-.text-block-5 {
-  font-family: 'Fa solid 900', sans-serif;
-}
 
 .command-details {
   display: block;
@@ -3056,21 +2861,6 @@ textarea.w-input, textarea.w-select {
   font-family: 'Fa brands 400', sans-serif;
 }
 
-.item-1-price {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  width: 180px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
 
 .item-quantity {
   display: -webkit-box;
@@ -3309,156 +3099,6 @@ textarea.w-input, textarea.w-select {
   -ms-flex-align: center;
   align-items: center;
   font-family: 'Fa brands 400', sans-serif;
-  list-style-type: none;
-}
-
-.order-2-name {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  width: 180px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-family: 'Fa brands 400', sans-serif;
-}
-
-.order-2-address {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  width: 180px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-family: 'Fa brands 400', sans-serif;
-}
-
-.order-2-quantity {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  width: 180px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-family: 'Fa brands 400', sans-serif;
-  list-style-type: none;
-}
-
-.order-1-buy-butt {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  width: 70px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  -ms-flex-align: center;
-  align-items: center;
-  background-color: #18bd36;
-  font-family: 'Fa solid 900', sans-serif;
-}
-
-.order-1-buttons {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  width: 180px;
-  -webkit-justify-content: space-around;
-  -ms-flex-pack: distribute;
-  justify-content: space-around;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  -ms-flex-align: center;
-  align-items: center;
-  list-style-type: none;
-}
-
-.order-1-details-butt {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  width: 70px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  -ms-flex-align: center;
-  align-items: center;
-  background-color: #0f0f0f;
-  font-family: 'Fa solid 900', sans-serif;
-}
-
-.order-2-buy-butt {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  width: 70px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  -ms-flex-align: center;
-  align-items: center;
-  background-color: #18bd36;
-}
-
-.order-2-details-butt {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  width: 70px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  -ms-flex-align: center;
-  align-items: center;
-  background-color: #0f0f0f;
-}
-
-.order-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
   list-style-type: none;
 }
 

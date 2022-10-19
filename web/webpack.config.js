@@ -29,7 +29,10 @@ module.exports = {
               },
             ],
           ],
-          plugins: ["./custom_plugin/my-babel-plugin.js"],
+          plugins: [
+            "./custom_plugin/my-babel-plugin.js",
+            "babel-plugin-transform-object-rest-spread",
+          ],
         },
       },
       {

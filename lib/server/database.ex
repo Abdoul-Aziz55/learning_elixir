@@ -43,6 +43,14 @@ defmodule Server.Database do
   end
 
   @impl true
+  def handle_call({:get_all}, _from, db) do
+    result =
+      :ets.tab2list(db)
+        |> Enum.map(fn {_, res} -> res end)
+    {:reply, {:ok, result}, db}
+  end
+
+  @impl true
   def handle_cast({:update, {key, newVal}}, db) do
     :ets.insert(db, {key, newVal})
     {:noreply, db}
@@ -59,6 +67,8 @@ defmodule Server.Database do
     :ets.delete(db, key)
     {:noreply, db}
   end
+
+
 
 
   ## client API
@@ -101,6 +111,13 @@ defmodule Server.Database do
   """
   def search(server, criteria) do
     GenServer.call(server, {:search, criteria})
+  end
+
+  @doc """
+  get a list of all values in a data base
+  """
+  def get_all(server) do
+    GenServer.call(server, {:get_all})
   end
 
 end

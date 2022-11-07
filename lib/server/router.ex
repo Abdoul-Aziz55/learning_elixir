@@ -6,24 +6,6 @@ defmodule Server.Router do
   plug :match
   plug :dispatch
 
-
-  get "/search" do
-    criterias = Map.to_list(fetch_query_params(conn).query_params)
-    {:ok, result} = Server.Database.search(Server.Database, criterias)
-    case result do
-      [] ->
-        conn
-          |> put_resp_content_type("text/plain")
-          |> send_resp(200, "Aucun résultat trouvé")
-      result ->
-        conn
-          |> put_resp_content_type("application/json")
-          |> send_resp(200, Poison.encode!(result))
-    end
-
-
-  end
-
   get "/create" do
     params = fetch_query_params(conn).query_params
     %{"id" => id} = params
@@ -52,10 +34,45 @@ defmodule Server.Router do
   end
 
   get "/orders" do
-    {:ok, orders} = Server.Database.get_all(Server.Database)
-    conn
-      |> put_resp_content_type("application/json")
-      |> send_resp(200, Poison.encode!(orders))
+    params = fetch_query_params(conn).query_params
+    riak_params =
+      Stream.filter(["rows", "page", "sort"], fn param -> Map.has_key?(params, param) end)
+      |>
+      Enum.reduce(%{"rows" => "30", "page" => "0", "sort" => "creation_date_index"}, fn param, acc ->
+        %{^param => val} = params
+        Map.put(acc, param, val)
+      end)
+    IO.inspect params
+    IO.inspect riak_params
+
+    if params === %{} do
+      res = Server.Riak.search("order", "*:*")
+      conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(200, Poison.encode!(res))
+    else
+
+      qs = params
+      |> Enum.filter(fn {k, _} -> !Enum.member?(["rows", "page", "sort"], k) end)
+      |> Enum.reduce("", fn {field, val}, acc ->
+          if acc === "" do
+            acc <> "#{field}:#{val}"
+          else
+            acc <> "%20AND%20#{field}:#{val}"
+          end
+        end)
+
+      res =
+        case qs do
+          "" -> Server.Riak.search("order", "*:*", elem(Integer.parse(riak_params["page"]), 0), elem(Integer.parse(riak_params["rows"]), 0), riak_params["sort"])
+          _ -> Server.Riak.search("order", qs, elem(Integer.parse(riak_params["page"]), 0), elem(Integer.parse(riak_params["rows"]), 0), riak_params["sort"])
+        end
+
+      conn
+        |> put_resp_content_type("text/plain")
+        |> send_resp(200, Poison.encode!(res))
+    end
+
   end
 
   get _ do
@@ -63,25 +80,14 @@ defmodule Server.Router do
     case String.match?(path, ~r(order\/)) do
       true ->
         order_id = Enum.at(String.split(path, "order/"), 1)
-        case Server.Database.read(Server.Database, order_id) do
-          {:ok, order} ->
-            conn
-              |> put_resp_content_type("application/json")
-              |> send_resp(200, Poison.encode!(order))
+        res = Server.Riak.search("order", "id:#{order_id}")
+          conn
+            |> put_resp_content_type("application/json")
+            |> send_resp(200, Poison.encode!(res))
 
-          _ -> send_resp(conn, 404, "valeur introuvable")
-          end
       _ -> send_file(conn, 200, "priv/static/index.html")
     end
 
   end
-
-
-
-  # match _ do
-  #   conn
-  #   |> put_resp_content_type("text/plain")
-  #   |> send_resp(404, "Erreur 404")
-  # end
 
 end

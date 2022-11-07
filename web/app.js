@@ -51,10 +51,10 @@ var remoteProps = {
   orders: (props) => {
     // if(!props.user)
     //   return
-    // var qs = { ...props.qs }; //, user_id: props.user.value.id}
-    // var query = Qs.stringify(qs);
+    var qs = { ...props.qs }; //, user_id: props.user.value.id}
+    var query = Qs.stringify(qs);
     return {
-      url: "http://localhost:4001/orders", // + (query == "" ? "" : "?" + query),
+      url: "http://localhost:4001/orders" + (query == "" ? "" : "?" + query),
       prop: "orders",
     };
   },
@@ -220,7 +220,6 @@ var Layout = createReactClass({
       modal: this.modal,
       loader: this.loader,
     };
-    console.log(this.state.loader);
     return (
       <JSXZ in="./Layout/layout" sel=".layout">
         <Z sel=".layout-container">
@@ -260,9 +259,6 @@ var Orders = createReactClass({
   statics: {
     remoteProps: [remoteProps.orders],
   },
-  componentDidMount() {
-    GoTo(this.props.route, "", "");
-  },
   delete_modal: function (id_to_delete) {
     this.props.modal({
       type: "delete",
@@ -297,16 +293,16 @@ var Orders = createReactClass({
     return (
       <JSXZ in="./Layout/Header/Orders/orders" sel=".container">
         <Z sel=".orders-body">
-          {this.props.orders.value.map((order) => (
+          {this.props.orders.value.docs.map((order) => (
             <JSXZ in="./Layout/Header/Orders/orders" sel=".order">
               <Z sel=".order-num">{order.remoteid}</Z>
-              <Z sel=".order-name">{order.custom.customer.full_name}</Z>
+              <Z sel=".order-name">{order["custom.customer.full_name"]}</Z>
               <Z sel=".order-address">
-                {order.custom.billing_address.street},{" "}
-                {order.custom.billing_address.postcode}{" "}
-                {order.custom.billing_address.city}
+                {order["custom.billing_address.street"]},{" "}
+                {order["custom.billing_address.postcode"]}{" "}
+                {order["custom.billing_address.city"]}
               </Z>
-              <Z sel=".order-quantity">{order.custom.items.length}</Z>
+              <Z sel=".order-quantity">{order["custom.items.product_title"].length}</Z>
               <Z
                 sel=".order-details-butt"
                 onClick={() => GoTo("order", order.id, "")}
@@ -322,6 +318,22 @@ var Orders = createReactClass({
             </JSXZ>
           ))}
         </Z>
+        <Z sel=".foot">
+          {[...Array(this.props.orders.value.numFound).keys()].map((page) => (
+            <JSXZ in="./Layout/Header/Orders/orders" sel=".pagination-footer">
+              <Z sel=".page" onClick={() => {
+                const obj = new URLSearchParams(this.props.qs);
+                var params = Object.fromEntries(obj);
+                var query = {...params, page: page}
+                GoTo("orders", "", query)
+                }
+              }>{page}</Z>
+              
+            </JSXZ>
+          ))
+          }
+        </Z>
+        
       </JSXZ>
     );
   },
@@ -340,36 +352,38 @@ var Order = createReactClass({
         </Z>
         <Z sel=".command-info-body">
           <JSXZ in="./Layout/Header/Order/order" sel=".command-info-item">
-            <Z sel=".command-info-num">{this.props.order.value.remoteid}</Z>
+            <Z sel=".command-info-num">{this.props.order.value.docs[0]["remoteid"]}</Z>
             <Z sel=".command-info-name">
-              {this.props.order.value.custom.customer.full_name}
+              {this.props.order.value.docs[0]["custom.customer.full_name"]}
             </Z>
             <Z sel=".command-info-address">
-              {this.props.order.value.custom.billing_address.street},{" "}
-              {this.props.order.value.custom.billing_address.postcode}{" "}
-              {this.props.order.value.custom.billing_address.city}
+              {this.props.order.value.docs[0]["custom.billing_address.street"]},{" "}
+              {this.props.order.value.docs[0]["custom.billing_address.postcode"]}{" "}
+              {this.props.order.value.docs[0]["custom.billing_address.city"]}
             </Z>
           </JSXZ>
         </Z>
         <Z sel=".command-details-body">
-          {this.props.order.value.custom.items.map((item) => {
-            var item_tot_price = (
-              item.unit_price * item.quantity_to_fetch
-            ).toFixed(2);
-            tot_price = (Number(tot_price) + Number(item_tot_price)).toFixed(2);
-
-            return (
-              <JSXZ
-                in="./Layout/Header/Order/order"
-                sel=".command-details-item"
-              >
-                <Z sel=".item-name">{item.product_title}</Z>
-                <Z sel=".item-unit-price">{item.unit_price} €</Z>
-                <Z sel=".item-quantity">{item.quantity_to_fetch}</Z>
-                <Z sel=".item-tot-price">{item_tot_price} €</Z>
-              </JSXZ>
-            );
-          })}
+          {this.props.order.value.docs.map((order) => (
+            order["custom.items.product_title"].map((title, index) => {
+              var item_tot_price = (
+                order["custom.items.unit_price"][index] * order["custom.items.quantity_to_fetch"][index]
+              ).toFixed(2);
+              tot_price = (Number(tot_price) + Number(item_tot_price)).toFixed(2);
+  
+              return (
+                <JSXZ
+                  in="./Layout/Header/Order/order"
+                  sel=".command-details-item"
+                >
+                  <Z sel=".item-name">{title}</Z>
+                  <Z sel=".item-unit-price">{order["custom.items.unit_price"][index]} €</Z>
+                  <Z sel=".item-quantity">{order["custom.items.quantity_to_fetch"][index]}</Z>
+                  <Z sel=".item-tot-price">{item_tot_price} €</Z>
+                </JSXZ>
+              );
+            })
+          ))}
         </Z>
         <Z sel=".order-tot-price">{tot_price} €</Z>
       </JSXZ>
@@ -447,6 +461,10 @@ function onPathChange() {
     qs: qs,
     cookie: cookies,
   };
+
+
+  console.log("in path change");
+  console.log(qs);
 
   var route, routeProps;
   //We try to match the requested path to one our our routes

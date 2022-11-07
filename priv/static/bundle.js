@@ -10982,11 +10982,13 @@ exports.isBuffer = function (obj) {
 "use strict";
 
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 function _toArray(arr) { return Array.isArray(arr) ? arr : Array.from(arr); }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 __webpack_require__(91);
 /* required library for our React app */
@@ -11052,10 +11054,10 @@ var remoteProps = {
   orders: function orders(props) {
     // if(!props.user)
     //   return
-    // var qs = { ...props.qs }; //, user_id: props.user.value.id}
-    // var query = Qs.stringify(qs);
+    var qs = _extends({}, props.qs); //, user_id: props.user.value.id}
+    var query = Qs.stringify(qs);
     return {
-      url: "http://localhost:4001/orders", // + (query == "" ? "" : "?" + query),
+      url: "http://localhost:4001/orders" + (query == "" ? "" : "?" + query),
       prop: "orders"
     };
   },
@@ -11289,7 +11291,6 @@ var Layout = createReactClass({
       modal: this.modal,
       loader: this.loader
     });
-    console.log(this.state.loader);
     return React.createElement(
       "div",
       {
@@ -11345,10 +11346,6 @@ var Orders = createReactClass({
   statics: {
     remoteProps: [remoteProps.orders]
   },
-  componentDidMount: function componentDidMount() {
-    GoTo(this.props.route, "", "");
-  },
-
   delete_modal: function delete_modal(id_to_delete) {
     var _this4 = this;
 
@@ -11468,7 +11465,7 @@ var Orders = createReactClass({
           {
             className: "orders-body"
           },
-          this.props.orders.value.map(function (order) {
+          this.props.orders.value.docs.map(function (order) {
             return React.createElement(
               "ul",
               {
@@ -11487,26 +11484,26 @@ var Orders = createReactClass({
                 {
                   className: "order-name"
                 },
-                order.custom.customer.full_name
+                order["custom.customer.full_name"]
               ),
               React.createElement(
                 "li",
                 {
                   className: "order-address"
                 },
-                order.custom.billing_address.street,
+                order["custom.billing_address.street"],
                 ",",
                 " ",
-                order.custom.billing_address.postcode,
+                order["custom.billing_address.postcode"],
                 " ",
-                order.custom.billing_address.city
+                order["custom.billing_address.city"]
               ),
               React.createElement(
                 "li",
                 {
                   className: "order-quantity"
                 },
-                order.custom.items.length
+                order["custom.items.product_title"].length
               ),
               React.createElement(
                 "li",
@@ -11552,41 +11549,27 @@ var Orders = createReactClass({
         {
           className: "foot"
         },
-        React.createElement(
-          "ul",
-          {
-            role: "list",
-            className: "pagination-footer w-list-unstyled"
-          },
-          React.createElement(
-            "li",
+        [].concat(_toConsumableArray(Array(this.props.orders.value.numFound).keys())).map(function (page) {
+          return React.createElement(
+            "ul",
             {
-              className: "page-0"
+              role: "list",
+              className: "pagination-footer w-list-unstyled"
             },
-            "0"
-          ),
-          React.createElement(
-            "li",
-            {
-              className: "page-1"
-            },
-            "1"
-          ),
-          React.createElement(
-            "li",
-            {
-              className: "page-2"
-            },
-            "2"
-          ),
-          React.createElement(
-            "li",
-            {
-              className: "page-3"
-            },
-            "3"
-          )
-        )
+            React.createElement(
+              "li",
+              {
+                className: "page",
+                onClick: function onClick() {
+                  var obj = new URLSearchParams(_this5.props.qs);
+                  var params = Object.fromEntries(obj);
+                  var query = _extends({}, params, { page: page });
+                  GoTo("orders", "", query);
+                } },
+              page
+            )
+          );
+        })
       )
     );
   }
@@ -11690,26 +11673,26 @@ var Order = createReactClass({
                 {
                   className: "command-info-num"
                 },
-                this.props.order.value.remoteid
+                this.props.order.value.docs[0]["remoteid"]
               ),
               React.createElement(
                 "li",
                 {
                   className: "command-info-name"
                 },
-                this.props.order.value.custom.customer.full_name
+                this.props.order.value.docs[0]["custom.customer.full_name"]
               ),
               React.createElement(
                 "li",
                 {
                   className: "command-info-address"
                 },
-                this.props.order.value.custom.billing_address.street,
+                this.props.order.value.docs[0]["custom.billing_address.street"],
                 ",",
                 " ",
-                this.props.order.value.custom.billing_address.postcode,
+                this.props.order.value.docs[0]["custom.billing_address.postcode"],
                 " ",
-                this.props.order.value.custom.billing_address.city
+                this.props.order.value.docs[0]["custom.billing_address.city"]
               )
             )
           )
@@ -11769,47 +11752,50 @@ var Order = createReactClass({
             {
               className: "command-details-body"
             },
-            this.props.order.value.custom.items.map(function (item) {
-              var item_tot_price = (item.unit_price * item.quantity_to_fetch).toFixed(2);
-              tot_price = (Number(tot_price) + Number(item_tot_price)).toFixed(2);
+            this.props.order.value.docs.map(function (order) {
+              return order["custom.items.product_title"].map(function (title, index) {
+                console.log(order["custom.items.unit_price"][index]);
+                var item_tot_price = (order["custom.items.unit_price"][index] * order["custom.items.quantity_to_fetch"][index]).toFixed(2);
+                tot_price = (Number(tot_price) + Number(item_tot_price)).toFixed(2);
 
-              return React.createElement(
-                "ul",
-                {
-                  role: "list",
-                  className: "command-details-item w-list-unstyled"
-                },
-                React.createElement(
-                  "li",
+                return React.createElement(
+                  "ul",
                   {
-                    className: "item-name"
+                    role: "list",
+                    className: "command-details-item w-list-unstyled"
                   },
-                  item.product_title
-                ),
-                React.createElement(
-                  "li",
-                  {
-                    className: "item-unit-price"
-                  },
-                  item.unit_price,
-                  " \u20AC"
-                ),
-                React.createElement(
-                  "li",
-                  {
-                    className: "item-quantity"
-                  },
-                  item.quantity_to_fetch
-                ),
-                React.createElement(
-                  "li",
-                  {
-                    className: "item-tot-price"
-                  },
-                  item_tot_price,
-                  " \u20AC"
-                )
-              );
+                  React.createElement(
+                    "li",
+                    {
+                      className: "item-name"
+                    },
+                    title
+                  ),
+                  React.createElement(
+                    "li",
+                    {
+                      className: "item-unit-price"
+                    },
+                    order["custom.items.unit_price"][index],
+                    " \u20AC"
+                  ),
+                  React.createElement(
+                    "li",
+                    {
+                      className: "item-quantity"
+                    },
+                    order["custom.items.quantity_to_fetch"][index]
+                  ),
+                  React.createElement(
+                    "li",
+                    {
+                      className: "item-tot-price"
+                    },
+                    item_tot_price,
+                    " \u20AC"
+                  )
+                );
+              });
             })
           ),
           React.createElement(
@@ -11917,6 +11903,9 @@ function onPathChange() {
     qs: qs,
     cookie: cookies
   });
+
+  console.log("in path change");
+  console.log(qs);
 
   var route, routeProps;
   //We try to match the requested path to one our our routes

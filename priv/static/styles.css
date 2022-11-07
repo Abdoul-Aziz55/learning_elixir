@@ -2717,7 +2717,7 @@ textarea.w-input, textarea.w-select {
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    width: 150px;
+    
     -webkit-box-pack: justify;
     -webkit-justify-content: space-between;
     -ms-flex-pack: justify;
@@ -3418,24 +3418,10 @@ textarea.w-input, textarea.w-select {
     font-family: 'Fa solid 900', sans-serif;
 }
 
-.page-0 {
+.page {
     padding: 15px;
     font-size: 20px;
-}
-
-.page-1 {
-    padding: 15px;
-    font-size: 20px;
-}
-
-.page-2 {
-    padding: 15px;
-    font-size: 20px;
-}
-
-.page-3 {
-    padding: 15px;
-    font-size: 20px;
+    cursor: pointer;
 }
 
 .command-info-title {

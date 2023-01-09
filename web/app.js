@@ -463,9 +463,6 @@ function onPathChange() {
   };
 
 
-  console.log("in path change");
-  console.log(qs);
-
   var route, routeProps;
   //We try to match the requested path to one our our routes
   for (var key in routes) {

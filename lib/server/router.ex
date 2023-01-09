@@ -42,8 +42,6 @@ defmodule Server.Router do
         %{^param => val} = params
         Map.put(acc, param, val)
       end)
-    IO.inspect params
-    IO.inspect riak_params
 
     if params === %{} do
       res = Server.Riak.search("order", "*:*")
@@ -75,19 +73,16 @@ defmodule Server.Router do
 
   end
 
+  get "/order/:order_id" do
+    res = Server.Riak.search("order", "id:#{order_id}")
+    conn
+      |> put_resp_content_type("application/json")
+      |> send_resp(200, Poison.encode!(res))
+
+  end
+
   get _ do
-    path = fetch_query_params(conn).request_path
-    case String.match?(path, ~r(order\/)) do
-      true ->
-        order_id = Enum.at(String.split(path, "order/"), 1)
-        res = Server.Riak.search("order", "id:#{order_id}")
-          conn
-            |> put_resp_content_type("application/json")
-            |> send_resp(200, Poison.encode!(res))
-
-      _ -> send_file(conn, 200, "priv/static/index.html")
-    end
-
+    send_file(conn, 200, "priv/static/index.html")
   end
 
 end

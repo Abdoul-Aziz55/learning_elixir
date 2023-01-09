@@ -11754,7 +11754,6 @@ var Order = createReactClass({
             },
             this.props.order.value.docs.map(function (order) {
               return order["custom.items.product_title"].map(function (title, index) {
-                console.log(order["custom.items.unit_price"][index]);
                 var item_tot_price = (order["custom.items.unit_price"][index] * order["custom.items.quantity_to_fetch"][index]).toFixed(2);
                 tot_price = (Number(tot_price) + Number(item_tot_price)).toFixed(2);
 
@@ -11903,9 +11902,6 @@ function onPathChange() {
     qs: qs,
     cookie: cookies
   });
-
-  console.log("in path change");
-  console.log(qs);
 
   var route, routeProps;
   //We try to match the requested path to one our our routes

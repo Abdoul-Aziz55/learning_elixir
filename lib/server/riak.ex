@@ -114,12 +114,12 @@ defmodule Server.Riak do
 
   def search(index, query, page \\ 0, rows \\ 30, sort \\ "creation_date_index") do
     url  = ~s[http://localhost:8098/search/query/#{index}/?wt=json&q=#{query}&start=#{rows * page}&rows=#{rows}&sort=#{sort}%20desc]
-    {:ok, {{'HTTP/1.1', _code, _msg}, _headers, body}} = :httpc.request(:get, {url, []}, [], [])
+    {:ok, {{'HTTP/1.1', code, _msg}, _headers, body}} = :httpc.request(:get, {url, []}, [], [])
     %{"docs" => docs, "numFound" => numFound} = Poison.decode!(body)["response"]
     if rem(numFound, rows) == 0 do
-      %{"docs" => docs, "numFound" => div(numFound, rows)}
+      %{"docs" => docs, "numFound" => div(numFound, rows), "code" => code}
     else
-      %{"docs" => docs, "numFound" =>  div(numFound, rows) + 1}
+      %{"docs" => docs, "numFound" =>  div(numFound, rows) + 1, "code" => code}
     end
   end
 end

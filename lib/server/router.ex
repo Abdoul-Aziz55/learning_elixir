@@ -1,8 +1,11 @@
 defmodule Server.Router do
+  require EEx
   use Plug.Router
   import Plug.Conn
 
-  plug Plug.Static, from: "priv/static", at: "/static"
+  plug Plug.Static, at: "/public", from: :learning_elixir
+  EEx.function_from_file :defp, :layout, "web/layout.html.eex", [:render]
+
   plug :match
   plug :dispatch
 
@@ -27,10 +30,10 @@ defmodule Server.Router do
   get "/delete" do
     params = fetch_query_params(conn).query_params
     %{"id" => id} = params
-    Server.Database.delete(Server.Database, id)
+    {code, msg} = Server.Riak.del_obj("orders", id)
     conn
       |> put_resp_content_type("application/json")
-      |> send_resp(202, Poison.encode!(%{"ok"=> "ok"}))
+      |> send_resp(code, Poison.encode!(msg))
   end
 
   get "/orders" do
@@ -44,10 +47,12 @@ defmodule Server.Router do
       end)
 
     if params === %{} do
-      res = Server.Riak.search("order", "*:*")
+      %{"code" => code, "docs" => docs , "numFound" => numFound } = Server.Riak.search("order", "*:*")
+      res = %{"docs" => docs , "numFound" => numFound}
+      IO.inspect(res)
       conn
         |> put_resp_content_type("application/json")
-        |> send_resp(200, Poison.encode!(res))
+        |> send_resp(code, Poison.encode!(res))
     else
 
       qs = params
@@ -60,15 +65,16 @@ defmodule Server.Router do
           end
         end)
 
-      res =
+      %{"code" => code, "docs" => docs , "numFound" => numFound } =
         case qs do
           "" -> Server.Riak.search("order", "*:*", elem(Integer.parse(riak_params["page"]), 0), elem(Integer.parse(riak_params["rows"]), 0), riak_params["sort"])
           _ -> Server.Riak.search("order", qs, elem(Integer.parse(riak_params["page"]), 0), elem(Integer.parse(riak_params["rows"]), 0), riak_params["sort"])
         end
-
+      res = %{"docs" => docs , "numFound" => numFound}
+      IO.inspect(res)
       conn
         |> put_resp_content_type("text/plain")
-        |> send_resp(200, Poison.encode!(res))
+        |> send_resp(code, Poison.encode!(res))
     end
 
   end
@@ -82,7 +88,9 @@ defmodule Server.Router do
   end
 
   get _ do
-    send_file(conn, 200, "priv/static/index.html")
+    conn = fetch_query_params(conn)
+    render = Reaxt.render!(:app, %{path: conn.request_path, cookies: conn.cookies, query: conn.params},30_000)
+    send_resp(put_resp_header(conn,"content-type","text/html;charset=utf-8"), render.param || 200,layout(render))
   end
 
 end

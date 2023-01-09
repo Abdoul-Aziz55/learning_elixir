@@ -7,7 +7,8 @@ defmodule LearningElixir.MixProject do
       version: "0.1.0",
       elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      compilers: [:reaxt_webpack] ++ Mix.compilers
     ]
   end
 
@@ -22,8 +23,9 @@ defmodule LearningElixir.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:plug_cowboy, "~> 2.0"},
-      {:poison, "~> 4.0"},
+      {:reaxt, tag: "2.0.1", github: "kbrw/reaxt"},
+      {:plug_cowboy, "~> 1.0.0"},
+      {:poison, "~> 2.1.0"},
     ]
   end
 end
